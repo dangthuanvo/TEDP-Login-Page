@@ -1,0 +1,117 @@
+<div class="login-root" [@fadeInStagger]>
+  <div class="login-bg-motif">
+    <canvas #loginBgCanvas class="login-bg-canvas"></canvas>
+  </div>
+  <div class="background-anim">
+    <div class="bg-shape bg-shape1"></div>
+    <div class="bg-shape bg-shape2"></div>
+    <div class="bg-shape bg-shape3"></div>
+    <div class="bg-shape bg-shape4"></div>
+    <div class="bg-shape bg-shape5"></div>
+  </div>
+  <div class="login-card" [@cardEntrance]>
+    <!-- Left: Branding & Messaging -->
+    <div class="login-left">
+      <div class="branding fade-in">
+        <div class="logo">
+          <img src="https://www.tma.vn/favicon.ico" alt="TMA Solutions Logo" class="tma-logo" width="40" height="40" [@logoEntrance] />
+          <span class="brand-name" [@brandNameSlide]>Introducing</span>
+        </div>
+      </div>
+      <div class="welcome-text fade-in">
+        <h1 class="animated-heading" [@tedpContainerPulse]>
+          <ng-container *ngFor="let letter of animatedLetters; let i = index">
+            <ng-container *ngIf="letter.isTedp">
+              <span
+                [@tedpFlyIn]="headingState === 'tedp' ? getTedpFlyInParams(i) : null"
+                [style.visibility]="headingState === 'full' || headingState === 'tedp' ? 'visible' : 'hidden'"
+                class="tedp-letter"
+                [style.transition]="'all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55)'"
+              >
+                {{ letter.char }}
+              </span>
+            </ng-container>
+            <ng-container *ngIf="!letter.isTedp && headingState === 'full'">
+              <span [@extraLetterAppear]="i" class="extra-letter">
+                {{ letter.char === ' ' ? '\u00A0' : letter.char }}
+              </span>
+            </ng-container>
+          </ng-container>
+        </h1>
+        <p class="subtitle">Democratizing data access and processing across your enterprise.</p>
+        <div class="platform-features">
+          <div class="feature">
+            <span class="feature-icon">
+              <svg width="20" height="20" fill="none" stroke="#4fd1c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <span class="feature-label">Secure SSO</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">
+              <svg width="20" height="20" fill="none" stroke="#4fd1c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.66 4.03 3 9 3s9-1.34 9-3V5"/><path d="M3 12c0 1.66 4.03 3 9 3s9-1.34 9-3"/></svg>
+            </span>
+            <span class="feature-label">Data Lakehouse</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">
+              <svg width="20" height="20" fill="none" stroke="#4fd1c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </span>
+            <span class="feature-label">Policy-as-Code</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">
+              <svg width="20" height="20" fill="none" stroke="#4fd1c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><polyline points="3 8 7 12 3 16"/><line x1="7" y1="12" x2="21" y2="12"/></svg>
+            </span>
+            <span class="feature-label">Realtime Streaming</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">
+              <svg width="20" height="20" fill="none" stroke="#4fd1c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="6" r="3"/><circle cx="12" cy="18" r="3"/><path d="M6 9v3a6 6 0 0 0 12 0V9"/></svg>
+            </span>
+            <span class="feature-label">Data Compute</span>
+          </div>
+          <div class="feature">
+            <span class="feature-icon">
+              <svg width="20" height="20" fill="none" stroke="#4fd1c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+            </span>
+            <span class="feature-label">Fast SQL Analytics</span>
+          </div>
+        </div>
+      </div>
+      <!-- Animated Data Visuals -->
+      <div class="data-visuals">
+        <div class="node node1"></div>
+        <div class="node node2"></div>
+        <div class="node node3"></div>
+        <div class="line line1" [@lineDraw]></div>
+        <div class="line line2" [@lineDraw]></div>
+        <div class="line line3" [@lineDraw]></div>
+        <div class="wave"></div>
+      </div>
+    </div>
+    <!-- Right: Login Form -->
+    <div class="login-right fade-in">
+      <form [@formFieldStagger]>
+        <label class="form-field">
+          <span>Username or Email</span>
+          <input type="text" placeholder="Enter your username or email" autocomplete="username" />
+        </label>
+        <label class="form-field password-label">
+          <span>Password</span>
+          <div class="password-input-wrapper">
+            <input [type]="showPassword ? 'text' : 'password'" placeholder="Enter your password" autocomplete="current-password" />
+            <span class="eye-icon" (click)="togglePasswordVisibility()">
+              <svg *ngIf="showPassword" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4fd1c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>
+              <svg *ngIf="!showPassword" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4fd1c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a21.81 21.81 0 0 1 5.06-5.94"/><path d="M1 1l22 22"/><path d="M9.53 9.53A3 3 0 0 0 12 15a3 3 0 0 0 2.47-5.47"/></svg>
+            </span>
+          </div>
+        </label>
+        <div class="sso-powered form-field">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4fd1c5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:6px;"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Single Sign-On
+        </div>
+        <button type="submit" class="sign-in-btn ripple form-field">SIGN IN</button>
+      </form>
+    </div>
+  </div>
+</div>
